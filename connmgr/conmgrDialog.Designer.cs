@@ -1,6 +1,6 @@
 ﻿namespace connmgr
 {
-    partial class ConnectionManager
+    partial class ConnectionManagerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConnectionManager));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConnectionManagerForm));
             this.connNameLabel = new System.Windows.Forms.Label();
             this.conUserNameLabel = new System.Windows.Forms.Label();
             this.connPasswordLabel = new System.Windows.Forms.Label();

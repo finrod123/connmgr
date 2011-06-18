@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace connmgr
 {
-    public partial class ConnectionManager : Form
+    public partial class ConnectionManagerForm : Form
     {
         const decimal MIN_TCPPORT = 0,
                       MAX_TCPPORT = 65535;
@@ -15,17 +15,31 @@ namespace connmgr
         GroupBox namingBox;
         ENamingMethod currentNamingMethod;
 
-        public ConnectionManager()
+        // datovy kontejner pro ulozeni dat o spojeni
+        ConnectionData connectData;
+
+        public ConnectionManagerForm()
         {
             InitializeComponent();
+            // vytvor datovy kontejner
+            connectData = new ConnectionData()
+            {
+                Pooling = true,
+                MinPoolSize = 1,
+                MaxPoolSize = 100,
+                IncrPoolSize = 5,
+                DescPoolSize = 1,
+                ConnectionLifetime = 0,
+                ConnectionTimeout = 15
+            };
             // proved uvodni nastaveni
             initAuthentication();
             initNamingMethods();
-
+            initAdvancedConnectionStringOptions();
             // nacti informace o pripojenich ze zdroju aplikace (XML soubor?)
 
             // priprav okno na zadani noveho spojeni => volej NoveSpojeni
-
+            NoveSpojeni();
         }
 
         /// <summary>
@@ -42,11 +56,11 @@ namespace connmgr
             DBAPrivileges.AutoCompleteMode = AutoCompleteMode.Suggest;
             DBAPrivileges.DropDownStyle = ComboBoxStyle.DropDownList;
             // vloz hodnoty pro vyber zvlastnich privilegii pro prihlaseni k databazi
-            DBAPrivileges.Items.AddRange(new object[3] {
+            DBAPrivileges.DataSource = new object[3] {
                 new { Name = "normální", Value = EDbaPrivileges.Normal },
                 new { Name = "SYSDBA", Value = EDbaPrivileges.SysDba },
                 new { Name = "SYSOPER", Value = EDbaPrivileges.SysOper }
-            });
+            };
             // udalosti: vyber konkretnich pristupovych opravneni
 
         }
@@ -62,10 +76,10 @@ namespace connmgr
             namingMethodType.DisplayMember = "Name";
             namingMethodType.ValueMember = "Value";
             // vloz hodnoty do seznamu s vyberem typu naming method
-            namingMethodType.Items.AddRange(new object[3] {
+            namingMethodType.DataSource = new object[3] {
                 new { Name = "connect descriptor", Value = ENamingMethod.ConnectDescriptor },
                 new { Name = "TNS název", Value = ENamingMethod.TnsServiceName },
-                new { Name = "LDAP", Value = ENamingMethod.Ldap }});
+                new { Name = "LDAP", Value = ENamingMethod.Ldap }};
             // udalosti: vyber naming metody zobrazuje prislusnou zalozku
             namingMethodType.SelectedValueChanged += new EventHandler(namingMethodChanged);
             // nastav direct naming
@@ -142,12 +156,14 @@ namespace connmgr
             serverType.DisplayMember = "Name";
             serverType.ValueMember = "Value";
             // nasyp hodnoty
-            serverType.Items.AddRange(new object[3] {
+            serverType.DataSource = new object[3] {
                 new { Name = "dedicated", Value = EDBServerType.Dedicated},
                 new { Name = "shared", Value = EDBServerType.Shared},
                 new { Name = "pooled", Value = EDBServerType.Pooled}
-            });
+            };
             // TODO: udalosti: zmena typu service handleru?
+
+            directNamingBox.Visible = false;
         }
 
         void zmenaPojmenovaniDb(object sender, EventArgs e)
@@ -183,6 +199,8 @@ namespace connmgr
             tnsSidB.Enabled = false;
             // tns server type
             tnsServerType.Enabled = false;
+
+            tnsNamingBox.Visible = false;
         }
 
         /// <summary>
@@ -201,19 +219,32 @@ namespace connmgr
 
             ldapServiceName.AutoCompleteMode = AutoCompleteMode.Suggest;
             ldapServiceName.AutoCompleteSource = AutoCompleteSource.RecentlyUsedList;
+
+            ldapNamingBox.Visible = false;
         }
 
         /// <summary>
-        /// Nastavi pokrocile moznosti connection stringu
+        /// Nastavi pokrocile moznosti connection stringu:
+        /// - connection pooling:
+        ///     - pooling, min pool size, max pool size,
+        ///       incr pool size, decr pool size,
+        ///       connection timeout, conection lifetime
+        /// - proxy user id, proxy user password
         /// </summary>
         void initAdvancedConnectionStringOptions()
         {
-            
+            // nastavi zakladni vlastnosti property grid:
+            advancedConnOptions.HelpVisible = true;
+            advancedConnOptions.ToolbarVisible = true;
+            advancedConnOptions.LargeButtons = false;
+            advancedConnOptions.PropertySort = PropertySort.CategorizedAlphabetical;
         }
 
         public void NoveSpojeni()
         {
-
+            // nastav pro zobrazeni pokrocilych moznosti aktualni connectData objekt
+            advancedConnOptions.SelectedObject = connectData;
+            //namingMethodType.SelectedValue = ENamingMethod.ConnectDescriptor;
         }
     }
 }

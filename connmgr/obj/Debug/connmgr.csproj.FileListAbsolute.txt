@@ -8,7 +8,6 @@ C:\Documents and Settings\benat7am.ROT-117-C.000\My Documents\Visual Studio 2008
 C:\Documents and Settings\Tom\Dokumenty\Visual Studio 2008\Projects\connmgr\connmgr\bin\Debug\connmgr.dll
 C:\Documents and Settings\Tom\Dokumenty\Visual Studio 2008\Projects\connmgr\connmgr\bin\Debug\connmgr.pdb
 C:\Documents and Settings\Tom\Dokumenty\Visual Studio 2008\Projects\connmgr\connmgr\obj\Debug\ResolveAssemblyReference.cache
-C:\Documents and Settings\Tom\Dokumenty\Visual Studio 2008\Projects\connmgr\connmgr\obj\Debug\connmgr.conmgrDialog.resources
 C:\Documents and Settings\Tom\Dokumenty\Visual Studio 2008\Projects\connmgr\connmgr\obj\Debug\connmgr.csproj.GenerateResource.Cache
 C:\Documents and Settings\Tom\Dokumenty\Visual Studio 2008\Projects\connmgr\connmgr\obj\Debug\connmgr.dll
 C:\Documents and Settings\Tom\Dokumenty\Visual Studio 2008\Projects\connmgr\connmgr\obj\Debug\connmgr.pdb
@@ -21,3 +20,4 @@ C:\Documents and Settings\benat7am.ROT-115-C\My Documents\Visual Studio 2008\Pro
 C:\Documents and Settings\benat7am.ROT-115-C\My Documents\Visual Studio 2008\Projects\connmgr\connmgr\obj\Debug\connmgr.exe
 C:\Documents and Settings\benat7am\My Documents\Visual Studio 2008\Projects\connmgr\connmgr\obj\Debug\connmgr.exe
 C:\Documents and Settings\benat7am\My Documents\Visual Studio 2008\Projects\connmgr\connmgr\obj\Debug\connmgr.pdb
+C:\Documents and Settings\Tom\Dokumenty\Visual Studio 2008\Projects\connmgr\connmgr\obj\Debug\connmgr.ConnectionManagerForm.resources
