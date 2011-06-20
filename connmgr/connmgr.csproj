@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connection.cs" />
     <Compile Include="ConnectionData.cs" />
     <Compile Include="conmgrDialog.cs">
       <SubType>Form</SubType>
@@ -56,12 +57,16 @@
     <Compile Include="conmgrDialog.Designer.cs">
       <DependentUpon>conmgrDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="conmgrDialog.resx">
       <DependentUpon>conmgrDialog.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

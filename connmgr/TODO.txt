@@ -1,0 +1,4 @@
+﻿20.6.2011
+1) prubezna kontrola unikatnosti jmena spojeni
+2) nastav event handlery pro ostatni tlacitka dialogu, napr:
+	- import, export, uprava, previous, next...

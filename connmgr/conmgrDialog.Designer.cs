@@ -32,7 +32,7 @@
             this.connNameLabel = new System.Windows.Forms.Label();
             this.conUserNameLabel = new System.Windows.Forms.Label();
             this.connPasswordLabel = new System.Windows.Forms.Label();
-            this.conName = new System.Windows.Forms.TextBox();
+            this.connName = new System.Windows.Forms.TextBox();
             this.connUsername = new System.Windows.Forms.TextBox();
             this.credentialsGroupBox = new System.Windows.Forms.GroupBox();
             this.connPassword = new System.Windows.Forms.MaskedTextBox();
@@ -62,6 +62,8 @@
             this.instanceNameLabel = new System.Windows.Forms.Label();
             this.hostLabel = new System.Windows.Forms.Label();
             this.tnsNamingBox = new System.Windows.Forms.GroupBox();
+            this.tnsPort = new System.Windows.Forms.TextBox();
+            this.tnsServerType = new System.Windows.Forms.TextBox();
             this.tnsName = new System.Windows.Forms.ComboBox();
             this.tnsSid = new System.Windows.Forms.TextBox();
             this.tnsInstanceName = new System.Windows.Forms.TextBox();
@@ -99,8 +101,6 @@
             this.exportConnB = new System.Windows.Forms.ToolStripSplitButton();
             this.vybranéSpojeníToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.všechnaSpojeníToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tnsServerType = new System.Windows.Forms.TextBox();
-            this.tnsPort = new System.Windows.Forms.TextBox();
             this.credentialsGroupBox.SuspendLayout();
             this.connOptions.SuspendLayout();
             this.connOptionsBasic.SuspendLayout();
@@ -150,15 +150,15 @@
             this.connPasswordLabel.TabIndex = 0;
             this.connPasswordLabel.Text = "Heslo:";
             // 
-            // conName
+            // connName
             // 
-            this.conName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.connName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.conName.Location = new System.Drawing.Point(108, 23);
-            this.conName.Name = "conName";
-            this.conName.Size = new System.Drawing.Size(460, 20);
-            this.conName.TabIndex = 1;
+            this.connName.Location = new System.Drawing.Point(108, 23);
+            this.connName.Name = "connName";
+            this.connName.Size = new System.Drawing.Size(460, 20);
+            this.connName.TabIndex = 1;
             // 
             // connUsername
             // 
@@ -179,7 +179,7 @@
             this.credentialsGroupBox.Controls.Add(this.connUsername);
             this.credentialsGroupBox.Controls.Add(this.conUserNameLabel);
             this.credentialsGroupBox.Controls.Add(this.connPasswordLabel);
-            this.credentialsGroupBox.Controls.Add(this.conName);
+            this.credentialsGroupBox.Controls.Add(this.connName);
             this.credentialsGroupBox.Location = new System.Drawing.Point(12, 28);
             this.credentialsGroupBox.Name = "credentialsGroupBox";
             this.credentialsGroupBox.Size = new System.Drawing.Size(574, 134);
@@ -331,6 +331,7 @@
             // 
             // connectionDescriptionBox
             // 
+            this.connectionDescriptionBox.Controls.Add(this.directNamingBox);
             this.connectionDescriptionBox.Controls.Add(this.tnsNamingBox);
             this.connectionDescriptionBox.Controls.Add(this.ldapNamingBox);
             this.connectionDescriptionBox.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -355,9 +356,10 @@
             this.directNamingBox.Controls.Add(this.portLabel);
             this.directNamingBox.Controls.Add(this.instanceNameLabel);
             this.directNamingBox.Controls.Add(this.hostLabel);
-            this.directNamingBox.Location = new System.Drawing.Point(25, 284);
+            this.directNamingBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.directNamingBox.Location = new System.Drawing.Point(3, 16);
             this.directNamingBox.Name = "directNamingBox";
-            this.directNamingBox.Size = new System.Drawing.Size(550, 87);
+            this.directNamingBox.Size = new System.Drawing.Size(550, 397);
             this.directNamingBox.TabIndex = 2;
             this.directNamingBox.TabStop = false;
             this.directNamingBox.Text = "Přímé zadání údajů";
@@ -466,7 +468,6 @@
             // 
             // tnsNamingBox
             // 
-            this.tnsNamingBox.Controls.Add(this.directNamingBox);
             this.tnsNamingBox.Controls.Add(this.tnsPort);
             this.tnsNamingBox.Controls.Add(this.tnsServerType);
             this.tnsNamingBox.Controls.Add(this.tnsName);
@@ -481,12 +482,27 @@
             this.tnsNamingBox.Controls.Add(this.tnsInstanceNameLabel);
             this.tnsNamingBox.Controls.Add(this.tnsServerLabel);
             this.tnsNamingBox.Controls.Add(this.tnsNameLabel);
-            this.tnsNamingBox.Location = new System.Drawing.Point(3, 177);
+            this.tnsNamingBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tnsNamingBox.Location = new System.Drawing.Point(3, 16);
             this.tnsNamingBox.Name = "tnsNamingBox";
-            this.tnsNamingBox.Size = new System.Drawing.Size(550, 236);
+            this.tnsNamingBox.Size = new System.Drawing.Size(550, 397);
             this.tnsNamingBox.TabIndex = 1;
             this.tnsNamingBox.TabStop = false;
             this.tnsNamingBox.Text = "TNS naming";
+            // 
+            // tnsPort
+            // 
+            this.tnsPort.Location = new System.Drawing.Point(112, 79);
+            this.tnsPort.Name = "tnsPort";
+            this.tnsPort.Size = new System.Drawing.Size(100, 20);
+            this.tnsPort.TabIndex = 33;
+            // 
+            // tnsServerType
+            // 
+            this.tnsServerType.Location = new System.Drawing.Point(112, 216);
+            this.tnsServerType.Name = "tnsServerType";
+            this.tnsServerType.Size = new System.Drawing.Size(221, 20);
+            this.tnsServerType.TabIndex = 32;
             // 
             // tnsName
             // 
@@ -867,21 +883,7 @@
             this.všechnaSpojeníToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
             this.všechnaSpojeníToolStripMenuItem1.Text = "Všechna spojení";
             // 
-            // tnsServerType
-            // 
-            this.tnsServerType.Location = new System.Drawing.Point(112, 216);
-            this.tnsServerType.Name = "tnsServerType";
-            this.tnsServerType.Size = new System.Drawing.Size(221, 20);
-            this.tnsServerType.TabIndex = 32;
-            // 
-            // tnsPort
-            // 
-            this.tnsPort.Location = new System.Drawing.Point(112, 79);
-            this.tnsPort.Name = "tnsPort";
-            this.tnsPort.Size = new System.Drawing.Size(100, 20);
-            this.tnsPort.TabIndex = 33;
-            // 
-            // ConnectionManager
+            // ConnectionManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -892,7 +894,7 @@
             this.Controls.Add(this.button5);
             this.Controls.Add(this.stornoB);
             this.Controls.Add(this.credentialsGroupBox);
-            this.Name = "ConnectionManager";
+            this.Name = "ConnectionManagerForm";
             this.Text = "Správce připojení";
             this.credentialsGroupBox.ResumeLayout(false);
             this.credentialsGroupBox.PerformLayout();
@@ -921,7 +923,7 @@
         private System.Windows.Forms.Label connNameLabel;
         private System.Windows.Forms.Label conUserNameLabel;
         private System.Windows.Forms.Label connPasswordLabel;
-        private System.Windows.Forms.TextBox conName;
+        private System.Windows.Forms.TextBox connName;
         private System.Windows.Forms.TextBox connUsername;
         private System.Windows.Forms.GroupBox credentialsGroupBox;
         private System.Windows.Forms.CheckBox osAuthenticate;

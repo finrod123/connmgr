@@ -10,13 +10,14 @@ namespace connmgr
     public partial class ConnectionManagerForm : Form
     {
         const decimal MIN_TCPPORT = 0,
-                      MAX_TCPPORT = 65535;
+                      MAX_TCPPORT = 65535,
+                      DEFAULT_TCPPORT = 1521;
 
         GroupBox namingBox;
-        ENamingMethod currentNamingMethod;
-
         // datovy kontejner pro ulozeni dat o spojeni
         ConnectionData connectData;
+        // priznak zadavani noveho pripojeni
+        bool newConnection;
 
         public ConnectionManagerForm()
         {
@@ -36,10 +37,34 @@ namespace connmgr
             initAuthentication();
             initNamingMethods();
             initAdvancedConnectionStringOptions();
-            // nacti informace o pripojenich ze zdroju aplikace (XML soubor?)
+            // nastav dalsi udalosti
+            setToolBarHandlers();
+            setHandlers();
+        }
 
-            // priprav okno na zadani noveho spojeni => volej NoveSpojeni
-            NoveSpojeni();
+        void formClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            Hide();
+        }
+
+        void setHandlers()
+        {
+            FormClosing += new FormClosingEventHandler(formClosing);
+        }
+
+        void setToolBarHandlers()
+        {
+            saveConnB.Click += new EventHandler(saveConnB_Click);
+        }
+
+        void saveConnB_Click(object sender, EventArgs e)
+        {
+            // ukladam nove spojeni -> volej ConnectionManager
+            if (newConnection)
+            {
+
+            }
         }
 
         /// <summary>
@@ -51,16 +76,19 @@ namespace connmgr
             // nastav chovani tlacitka pro volbu typu autentizace
             osAuthenticate.CheckedChanged += new EventHandler(zmenaTypuAutentizace);
 
-            DBAPrivileges.DisplayMember = "Name";
-            DBAPrivileges.ValueMember = "Value";
+            
             DBAPrivileges.AutoCompleteMode = AutoCompleteMode.Suggest;
             DBAPrivileges.DropDownStyle = ComboBoxStyle.DropDownList;
             // vloz hodnoty pro vyber zvlastnich privilegii pro prihlaseni k databazi
-            DBAPrivileges.DataSource = new object[3] {
+            DBAPrivileges.DataSource = new ArrayList() {
                 new { Name = "normální", Value = EDbaPrivileges.Normal },
                 new { Name = "SYSDBA", Value = EDbaPrivileges.SysDba },
                 new { Name = "SYSOPER", Value = EDbaPrivileges.SysOper }
             };
+
+            DBAPrivileges.ValueMember = "Value";
+            DBAPrivileges.DisplayMember = "Name";
+            
             // udalosti: vyber konkretnich pristupovych opravneni
 
         }
@@ -73,34 +101,40 @@ namespace connmgr
         {
             namingMethodType.AutoCompleteMode = AutoCompleteMode.Suggest;
             namingMethodType.DropDownStyle = ComboBoxStyle.DropDownList;
-            namingMethodType.DisplayMember = "Name";
-            namingMethodType.ValueMember = "Value";
             // vloz hodnoty do seznamu s vyberem typu naming method
-            namingMethodType.DataSource = new object[3] {
+            namingMethodType.DataSource = new[] {
                 new { Name = "connect descriptor", Value = ENamingMethod.ConnectDescriptor },
                 new { Name = "TNS název", Value = ENamingMethod.TnsServiceName },
                 new { Name = "LDAP", Value = ENamingMethod.Ldap }};
-            // udalosti: vyber naming metody zobrazuje prislusnou zalozku
-            namingMethodType.SelectedValueChanged += new EventHandler(namingMethodChanged);
+
+            namingMethodType.DisplayMember = "Name";
+            namingMethodType.ValueMember = "Value";
+            
             // nastav direct naming
             initDirectNaming();
             // nastav TNS service name naming
             initTnsNaming();
             // nastav LDAP naming
             initLdapNaming();
+            // vyber defaultni naming box a nastav mu viditelnost
+            (namingBox = directNamingBox).Visible = true;
+            namingMethodType.SelectedValue = ENamingMethod.ConnectDescriptor;
+            // nastav viditelnost ostatnich panelu naming metod
+            tnsNamingBox.Visible = false;
+            ldapNamingBox.Visible = false;
+
+            // udalosti: vyber naming metody zobrazuje prislusnou zalozku
+            namingMethodType.SelectedValueChanged += new EventHandler(namingMethodChanged);
         }
 
         void namingMethodChanged(object sender, EventArgs e)
         {
             ENamingMethod selected = (ENamingMethod)namingMethodType.SelectedValue;
 
-            if (selected == currentNamingMethod)
-            {
-                return;
-            }
+            // zneviditelni predchozi naming box
+            namingBox.Visible = false;
 
-            currentNamingMethod = selected;
-
+            // podle vybrane hodnoty zviditelni pozadovany naming box
             switch (selected)
             {
                 case ENamingMethod.ConnectDescriptor:
@@ -153,17 +187,17 @@ namespace connmgr
             serverType.AutoCompleteMode = AutoCompleteMode.Suggest;
             serverType.AutoCompleteSource = AutoCompleteSource.RecentlyUsedList;
             serverType.DropDownStyle = ComboBoxStyle.DropDownList;
-            serverType.DisplayMember = "Name";
-            serverType.ValueMember = "Value";
+            
             // nasyp hodnoty
-            serverType.DataSource = new object[3] {
+            serverType.DataSource = new[] {
                 new { Name = "dedicated", Value = EDBServerType.Dedicated},
                 new { Name = "shared", Value = EDBServerType.Shared},
                 new { Name = "pooled", Value = EDBServerType.Pooled}
             };
-            // TODO: udalosti: zmena typu service handleru?
 
-            directNamingBox.Visible = false;
+            serverType.DisplayMember = "Name";
+            serverType.ValueMember = "Value";
+            // TODO: udalosti: zmena typu service handleru?
         }
 
         void zmenaPojmenovaniDb(object sender, EventArgs e)
@@ -199,8 +233,6 @@ namespace connmgr
             tnsSidB.Enabled = false;
             // tns server type
             tnsServerType.Enabled = false;
-
-            tnsNamingBox.Visible = false;
         }
 
         /// <summary>
@@ -219,8 +251,6 @@ namespace connmgr
 
             ldapServiceName.AutoCompleteMode = AutoCompleteMode.Suggest;
             ldapServiceName.AutoCompleteSource = AutoCompleteSource.RecentlyUsedList;
-
-            ldapNamingBox.Visible = false;
         }
 
         /// <summary>
@@ -238,13 +268,104 @@ namespace connmgr
             advancedConnOptions.ToolbarVisible = true;
             advancedConnOptions.LargeButtons = false;
             advancedConnOptions.PropertySort = PropertySort.CategorizedAlphabetical;
+            // nastav objekt pro zobrazeni
+            advancedConnOptions.SelectedObject = connectData;
         }
 
+        /// <summary>
+        /// Metoda pro pripravu dialogu na zadani noveho pripojeni
+        /// </summary>
         public void NoveSpojeni()
         {
-            // nastav pro zobrazeni pokrocilych moznosti aktualni connectData objekt
-            advancedConnOptions.SelectedObject = connectData;
-            //namingMethodType.SelectedValue = ENamingMethod.ConnectDescriptor;
+            Show();
+            noveSpojeni();
         }
+
+        /// <summary>
+        /// Pomocna metoda pro pripravu dialogu na zadani noveho pripojeni
+        /// </summary>
+        void noveSpojeni()
+        {
+            // resetuj zakladni udaje
+            connName.Clear();
+            resetAuthentication();
+            resetNamingMethods();
+            resetAdvancedConnectionStringOptions();
+            // zrus vyber spojeni v connListu
+            connList.SelectedItem = null;
+            // nastav priznak noveho spojeni
+            newConnection = true;
+        }
+
+        /// <summary>
+        /// Pomocna metoda pro noveSpojeni()
+        /// </summary>
+        void resetAuthentication()
+        {
+            connUsername.Clear();
+            connPassword.Clear();
+
+            osAuthenticate.Checked = false;
+            DBAPrivileges.SelectedValue = EDbaPrivileges.Normal;
+        }
+
+        /// <summary>
+        /// Pomocna metoda pro noveSpojeni()
+        /// </summary>
+        void resetNamingMethods()
+        {
+            resetDirectNaming();
+            resetTnsNaming();
+            resetLdapNaming();
+
+            namingMethodType.SelectedValue = ENamingMethod.ConnectDescriptor;
+        }
+
+        void resetDirectNaming()
+        {
+            host.SelectedItem = null;
+            port.Value = DEFAULT_TCPPORT;
+
+            serviceName.Clear();
+            instanceName.Clear();
+            sid.Clear();
+            serviceNameB.Checked = !(sidB.Checked = false);
+
+            serverType.SelectedValue = EDBServerType.Dedicated;
+        }
+
+        void resetTnsNaming()
+        {
+            tnsName.SelectedItem = null;
+        }
+
+        void resetLdapNaming()
+        {
+            ldapServer.SelectedItem = null;
+            ldapContext.Clear();
+            ldapServiceName.Clear();
+        }
+
+        void resetAdvancedConnectionStringOptions()
+        {
+            // resetuj connect data objekt
+            resetConnectionData();
+            // proved refresh jeho zobrazeni
+            advancedConnOptions.Refresh();
+        }
+
+        void resetConnectionData()
+        {
+            // nastav pokrocile moznosti connect stringu
+            connectData.Pooling = true;
+            connectData.MinPoolSize = 1;
+            connectData.MaxPoolSize = 100;
+            connectData.IncrPoolSize = 5;
+            connectData.DescPoolSize = 1;
+            connectData.ConnectionLifetime = 0;
+            connectData.ConnectionTimeout = 15;
+        }
+
+        
     }
 }
