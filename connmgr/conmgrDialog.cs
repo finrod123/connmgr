@@ -7,6 +7,24 @@ using System.Windows.Forms;
 
 namespace connmgr
 {
+    public enum EConnectionSaveCode
+    {
+        Ok,
+        EmptyConnectionName,
+        EmptyUsername,
+        EmptyPassword,
+        EmptyHost,
+        EmptyServiceName,
+        EmptySid,
+        EmptyTnsIdentifier,
+        EmptyLdapServiceName,
+        EmptyLdapServer,
+        EmptyLdapContext,
+        EmptyProxyPassword,
+        DuplicateConnectionName,
+        Error
+    }
+
     public partial class ConnectionManagerForm : Form
     {
         const decimal MIN_TCPPORT = 0,
@@ -18,21 +36,18 @@ namespace connmgr
         ConnectionData connectData;
         // priznak zadavani noveho pripojeni
         bool newConnection;
+        // odkaz na ConnectionManager
+        ConnectionManager connectionManager;
 
-        public ConnectionManagerForm()
+        public ConnectionManagerForm(ConnectionManager connectionManager)
         {
             InitializeComponent();
-            // vytvor datovy kontejner
-            connectData = new ConnectionData()
-            {
-                Pooling = true,
-                MinPoolSize = 1,
-                MaxPoolSize = 100,
-                IncrPoolSize = 5,
-                DescPoolSize = 1,
-                ConnectionLifetime = 0,
-                ConnectionTimeout = 15
-            };
+            // prirad odkaz na connection manager a 
+            this.connectionManager = connectionManager;
+            linkWithConnectManager();
+            // vytvor datovy kontejner a resetuj nektera jeho nastaveni
+            connectData = new ConnectionData();
+            connectData.resetConnectionStringValues();
             // proved uvodni nastaveni
             initAuthentication();
             initNamingMethods();
@@ -40,6 +55,18 @@ namespace connmgr
             // nastav dalsi udalosti
             setToolBarHandlers();
             setHandlers();
+        }
+
+        void linkWithConnectManager()
+        {
+            // prihlas se o odber informaci o novem pripojeni
+            connectionManager.ConnectionAdded += connectionAddedEventHandler;
+        }
+
+        void connectionAddedEventHandler(ConnectionAddedEventArgs e)
+        {
+            // pridej nove pripojeni
+            MessageBox.Show(e.Connection.Name);
         }
 
         void formClosing(object sender, FormClosingEventArgs e)
@@ -60,11 +87,280 @@ namespace connmgr
 
         void saveConnB_Click(object sender, EventArgs e)
         {
-            // ukladam nove spojeni -> volej ConnectionManager
+            // pokud neni potreba ulozit nova data, skonci
+            if (!isSaveNeeded())
+                return;
+            // pokud to potreba je, zkus je ulozit
+            if (saveData() &&
+               newConnection)
+            {
+                newConnection = false;
+            }
+        }
+
+        /// <summary>
+        /// Metoda, ktera ulozi data spojeni a vrati priznak uspesnosti operace
+        /// </summary>
+        /// <returns></returns>
+        bool saveData()
+        {
+            // zkontroluj validitu dat
+            switch (validateInput())
+            {
+                case EConnectionSaveCode.EmptyConnectionName:
+                case EConnectionSaveCode.EmptyUsername:
+                case EConnectionSaveCode.EmptyPassword:
+                case EConnectionSaveCode.EmptyHost:
+                case EConnectionSaveCode.EmptyServiceName:
+                case EConnectionSaveCode.EmptySid:
+                case EConnectionSaveCode.EmptyTnsIdentifier:
+                case EConnectionSaveCode.EmptyLdapServiceName:
+                case EConnectionSaveCode.EmptyLdapServer:
+                case EConnectionSaveCode.EmptyLdapContext:
+                    errorLabel.Text = "Je nutné doplnit některá chybějící data!";
+                    return false;
+                case EConnectionSaveCode.Error:
+                    errorLabel.Text = "Došlo k neznámé chybě!";
+                    return false;
+            }
+
+            // zapis data z formulare do connectData objektu
+            refreshConnectData();
+            // data jsou validni -> ulozeni dat
             if (newConnection)
             {
+                switch (connectionManager.AddConnection(connectData))
+                {
+                    case EConnectionSaveCode.DuplicateConnectionName:
+                        errorLabel.Text = "Připojení s takovým názvem už existuje!";
+                        return false;
+                    case EConnectionSaveCode.Error:
+                        errorLabel.Text = "Došlo k neznámé chybě!";
+                        return false;
+                }
 
+                // jinak vse probehlo v poradku
+                errorLabel.Text = "";
+                return true;
             }
+
+            // zmena dat spojeni
+
+            errorLabel.Text = "";
+            return true;
+        }
+
+        void refreshConnectData()
+        {
+            // zapis zakladni data
+            connectData.Name = connName.Text;
+            // zapis autentizacni data
+            if (!osAuthenticate.Checked)
+            {
+                connectData.AuthType = EAuthType.Database;
+                connectData.UserName = connUsername.Text;
+            } else
+                connectData.AuthType = EAuthType.Os;
+
+            connectData.DbaPrivileges = (EDbaPrivileges)DBAPrivileges.SelectedValue;
+
+            // nastav naming metody
+            switch (connectData.NamingMethod = (ENamingMethod)namingMethodType.SelectedValue)
+            {
+                case ENamingMethod.ConnectDescriptor:
+                    
+                    connectData.Server = host.Text;
+                    connectData.Port = port.Value;
+                    
+                    if (connectData.UsingSid = sidB.Checked)
+                        connectData.Sid = sid.Text;
+                    else
+                    {
+                        connectData.ServiceName = serviceName.Text;
+                        connectData.InstanceName = instanceName.Text;
+                    }
+
+                    connectData.ServerType = (EDBServerType)serverType.SelectedValue;
+                    break;
+
+                case ENamingMethod.TnsServiceName:
+
+                    connectData.TnsServiceName = tnsName.Text;
+                    break;
+
+                case ENamingMethod.Ldap:
+
+                    connectData.LdapServiceName = ldapServiceName.Text;
+                    connectData.LdapServer = ldapServer.Text;
+                    connectData.LdapContext = ldapContext.Text;
+                    break;
+            }
+            
+            // pokrocile connection string moznosti jsou uz nastaveny, nebot
+            // jsou prubezne nastavovany behem upravy dat v dialogu
+        }
+
+        EConnectionSaveCode validateInput()
+        {
+            EConnectionSaveCode saveCode;
+
+            // zkontroluj jmeno pripojeni
+            if (string.IsNullOrEmpty(connName.Text))
+            {
+                connNameErrorLabel.Text = "Chybí jméno připojení!";
+                return EConnectionSaveCode.EmptyConnectionName;
+            } else
+                connNameErrorLabel.Text = "";
+
+            // zkontroluj autentizacni data
+            saveCode = validateAuthentication();
+            if (saveCode != EConnectionSaveCode.Ok)
+                return saveCode;
+
+            // zkontroluj naming metody
+            saveCode = validateNamingMethods();
+            if (saveCode != EConnectionSaveCode.Ok)
+                return saveCode;
+            
+            // zkontoluj pokrocile moznosti connection stringu
+            return validateAdvancedConnectionStringOptions();
+        }
+
+        /// <summary>
+        /// Pomocna metoda, ktera rozhoduje, zda je nutne provest ulozeni dat
+        /// (true pro nova spojeni, pro existujici spojeni nutno porovnat aktualne
+        /// zadana data s temi v handle existujiciho spojeni (metoda Equals)
+        /// </summary>
+        /// <returns></returns>
+        bool isSaveNeeded()
+        {
+            return newConnection;
+        }
+
+        EConnectionSaveCode validateAuthentication()
+        {
+            if (!osAuthenticate.Checked)
+            {
+                if (string.IsNullOrEmpty(connUsername.Text))
+                {
+                    connUsernameErrorLabel.Text = "Chybí uživatelské jméno!";
+                    return EConnectionSaveCode.EmptyUsername;
+                } else
+                    connUsernameErrorLabel.Text = "";
+            }
+
+            return EConnectionSaveCode.Ok;
+        }
+
+        EConnectionSaveCode validateNamingMethods()
+        {
+            EConnectionSaveCode saveCode;
+
+            switch ((ENamingMethod)namingMethodType.SelectedValue)
+            {
+                case ENamingMethod.ConnectDescriptor:
+                    saveCode = validateDirectNaming();
+                    break;
+                case ENamingMethod.TnsServiceName:
+                    saveCode = validateTnsNaming();
+                    break;
+                case ENamingMethod.Ldap:
+                    saveCode = validateLdapNaming();
+                    break;
+                default:
+                    saveCode = EConnectionSaveCode.Error;
+                    break;
+            }
+
+            return saveCode;
+        }
+
+        EConnectionSaveCode validateDirectNaming()
+        {
+            if (string.IsNullOrEmpty(host.Text))
+            {
+                hostErrorLabel.Text = "Není vybrán žádný server!";
+                namingMethodType.SelectedValue = ENamingMethod.ConnectDescriptor;
+                return EConnectionSaveCode.EmptyHost;
+            } else
+                hostErrorLabel.Text = "";
+
+            if (serviceNameB.Checked)
+            {
+                if (string.IsNullOrEmpty(serviceName.Text))
+                {
+                    serviceNameErrorLabel.Text = "Není zadáno jméno služby!";
+                    namingMethodType.SelectedValue = ENamingMethod.ConnectDescriptor;
+                    return EConnectionSaveCode.EmptyServiceName;
+                } else
+                    serviceNameErrorLabel.Text = "";
+
+            } else if (string.IsNullOrEmpty(sid.Text))
+            {
+                sidErrorLabel.Text = "Není zadán identifikátor SID!";
+                namingMethodType.SelectedValue = ENamingMethod.ConnectDescriptor;
+                return EConnectionSaveCode.EmptySid;
+            } else
+                sidErrorLabel.Text = "";
+
+            return EConnectionSaveCode.Ok;
+        }
+
+        EConnectionSaveCode validateTnsNaming()
+        {
+            if (string.IsNullOrEmpty(tnsName.Text))
+            {
+                tnsNameErrorLabel.Text = "Není vybrán žádný TNS identifikátor!";
+                namingMethodType.SelectedValue = ENamingMethod.TnsServiceName;
+                return EConnectionSaveCode.EmptyTnsIdentifier;
+            } else
+                tnsNameErrorLabel.Text = "";
+
+            return EConnectionSaveCode.Ok;
+        }
+
+        EConnectionSaveCode validateLdapNaming()
+        {
+            if (string.IsNullOrEmpty(ldapServiceName.Text))
+            {
+                ldapServiceNameErrorLabel.Text = "Není zadáno jméno služby!";
+                namingMethodType.SelectedValue = ENamingMethod.Ldap;
+                return EConnectionSaveCode.EmptyLdapServiceName;
+            } else
+                ldapServiceNameErrorLabel.Text = "";
+
+            if (string.IsNullOrEmpty(ldapServer.Text))
+            {
+                ldapServerErrorLabel.Text = "Není zadán LDAP server!";
+                namingMethodType.SelectedValue = ENamingMethod.Ldap;
+                return EConnectionSaveCode.EmptyLdapServer;
+            } else
+                ldapServerErrorLabel.Text = "";
+
+            if (string.IsNullOrEmpty(ldapContext.Text))
+            {
+                ldapContextErrorLabel.Text = "Není zadán žádný Oracle context!";
+                namingMethodType.SelectedValue = ENamingMethod.Ldap;
+                return EConnectionSaveCode.EmptyLdapContext;
+            } else
+                ldapContextErrorLabel.Text = "";
+
+            return EConnectionSaveCode.Ok;
+        }
+
+        EConnectionSaveCode validateAdvancedConnectionStringOptions()
+        {
+            if (!string.IsNullOrEmpty(connectData.ProxyUserId) &&
+                string.IsNullOrEmpty(connectData.ProxyUserPassword))
+            {
+                advancedConnectionStringOptionsErrorLabel.Text =
+                    "Je nutné zadat heslo proxy uživatele!";
+                connOptions.SelectedTab = advancedConnectionOptionsPage;
+                return EConnectionSaveCode.EmptyProxyPassword;
+            } else
+                advancedConnectionStringOptionsErrorLabel.Text = "";
+
+            return EConnectionSaveCode.Ok;
         }
 
         /// <summary>
@@ -148,6 +444,7 @@ namespace connmgr
                     break;
             }
 
+            connOptions.SelectedTab = connOptionsBasic;
             namingBox.Visible = true;
         }
 
@@ -349,23 +646,14 @@ namespace connmgr
         void resetAdvancedConnectionStringOptions()
         {
             // resetuj connect data objekt
-            resetConnectionData();
+            connectData.resetConnectionStringValues();
             // proved refresh jeho zobrazeni
             advancedConnOptions.Refresh();
         }
 
-        void resetConnectionData()
+        private void credentialsGroupBox_Enter(object sender, EventArgs e)
         {
-            // nastav pokrocile moznosti connect stringu
-            connectData.Pooling = true;
-            connectData.MinPoolSize = 1;
-            connectData.MaxPoolSize = 100;
-            connectData.IncrPoolSize = 5;
-            connectData.DescPoolSize = 1;
-            connectData.ConnectionLifetime = 0;
-            connectData.ConnectionTimeout = 15;
-        }
-
         
+        }
     }
 }

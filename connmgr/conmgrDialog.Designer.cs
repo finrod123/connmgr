@@ -83,7 +83,7 @@
             this.ldapContextLabel = new System.Windows.Forms.Label();
             this.ldapServerLabel = new System.Windows.Forms.Label();
             this.ldapServer = new System.Windows.Forms.ComboBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.advancedConnectionOptionsPage = new System.Windows.Forms.TabPage();
             this.advancedConnOptions = new System.Windows.Forms.PropertyGrid();
             this.connmgrNabidka = new System.Windows.Forms.ToolStrip();
             this.prevConnB = new System.Windows.Forms.ToolStripButton();
@@ -101,6 +101,19 @@
             this.exportConnB = new System.Windows.Forms.ToolStripSplitButton();
             this.vybranéSpojeníToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.všechnaSpojeníToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.conNameErrorlabel = new System.Windows.Forms.Label();
+            this.connUsernameErrorLabel = new System.Windows.Forms.Label();
+            this.connPasswwordErrorLabel = new System.Windows.Forms.Label();
+            this.hostErrorLabel = new System.Windows.Forms.Label();
+            this.serviceNameErrorLabel = new System.Windows.Forms.Label();
+            this.sidErrorLabel = new System.Windows.Forms.Label();
+            this.tnsNameErrorLabel = new System.Windows.Forms.Label();
+            this.ldapServiceNameErrorLabel = new System.Windows.Forms.Label();
+            this.ldapServerErrorLabel = new System.Windows.Forms.Label();
+            this.ldapContextErrorLabel = new System.Windows.Forms.Label();
+            this.connNameErrorLabel = new System.Windows.Forms.Label();
+            this.advancedConnectionStringOptionsErrorLabel = new System.Windows.Forms.Label();
+            this.errorLabel = new System.Windows.Forms.Label();
             this.credentialsGroupBox.SuspendLayout();
             this.connOptions.SuspendLayout();
             this.connOptionsBasic.SuspendLayout();
@@ -110,7 +123,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.port)).BeginInit();
             this.tnsNamingBox.SuspendLayout();
             this.ldapNamingBox.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.advancedConnectionOptionsPage.SuspendLayout();
             this.connmgrNabidka.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -157,7 +170,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.connName.Location = new System.Drawing.Point(108, 23);
             this.connName.Name = "connName";
-            this.connName.Size = new System.Drawing.Size(460, 20);
+            this.connName.Size = new System.Drawing.Size(291, 20);
             this.connName.TabIndex = 1;
             // 
             // connUsername
@@ -174,6 +187,10 @@
             // 
             this.credentialsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.credentialsGroupBox.Controls.Add(this.connNameErrorLabel);
+            this.credentialsGroupBox.Controls.Add(this.connPasswwordErrorLabel);
+            this.credentialsGroupBox.Controls.Add(this.connUsernameErrorLabel);
+            this.credentialsGroupBox.Controls.Add(this.conNameErrorlabel);
             this.credentialsGroupBox.Controls.Add(this.connPassword);
             this.credentialsGroupBox.Controls.Add(this.connNameLabel);
             this.credentialsGroupBox.Controls.Add(this.connUsername);
@@ -186,6 +203,7 @@
             this.credentialsGroupBox.TabIndex = 2;
             this.credentialsGroupBox.TabStop = false;
             this.credentialsGroupBox.Text = "Základní údaje";
+            this.credentialsGroupBox.Enter += new System.EventHandler(this.credentialsGroupBox_Enter);
             // 
             // connPassword
             // 
@@ -213,19 +231,17 @@
             // 
             // namingMethodType
             // 
-            this.namingMethodType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.namingMethodType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.namingMethodType.FormattingEnabled = true;
             this.namingMethodType.Location = new System.Drawing.Point(139, 55);
             this.namingMethodType.Name = "namingMethodType";
-            this.namingMethodType.Size = new System.Drawing.Size(144, 21);
+            this.namingMethodType.Size = new System.Drawing.Size(136, 21);
             this.namingMethodType.TabIndex = 4;
             // 
             // namingMethodTypeLabel
             // 
-            this.namingMethodTypeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.namingMethodTypeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.namingMethodTypeLabel.AutoSize = true;
             this.namingMethodTypeLabel.Location = new System.Drawing.Point(12, 58);
@@ -236,19 +252,17 @@
             // 
             // DBAPrivileges
             // 
-            this.DBAPrivileges.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.DBAPrivileges.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.DBAPrivileges.FormattingEnabled = true;
             this.DBAPrivileges.Location = new System.Drawing.Point(139, 23);
             this.DBAPrivileges.Name = "DBAPrivileges";
-            this.DBAPrivileges.Size = new System.Drawing.Size(144, 21);
+            this.DBAPrivileges.Size = new System.Drawing.Size(136, 21);
             this.DBAPrivileges.TabIndex = 4;
             // 
             // DBAPrivilegesLabel
             // 
-            this.DBAPrivilegesLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.DBAPrivilegesLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.DBAPrivilegesLabel.AutoSize = true;
             this.DBAPrivilegesLabel.Location = new System.Drawing.Point(12, 26);
@@ -260,7 +274,7 @@
             // stornoB
             // 
             this.stornoB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.stornoB.Location = new System.Drawing.Point(501, 759);
+            this.stornoB.Location = new System.Drawing.Point(501, 669);
             this.stornoB.Name = "stornoB";
             this.stornoB.Size = new System.Drawing.Size(76, 23);
             this.stornoB.TabIndex = 6;
@@ -280,7 +294,7 @@
             // 
             this.okB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okB.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okB.Location = new System.Drawing.Point(420, 759);
+            this.okB.Location = new System.Drawing.Point(420, 669);
             this.okB.Name = "okB";
             this.okB.Size = new System.Drawing.Size(76, 23);
             this.okB.TabIndex = 6;
@@ -293,11 +307,11 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.connOptions.Controls.Add(this.connOptionsBasic);
-            this.connOptions.Controls.Add(this.tabPage2);
+            this.connOptions.Controls.Add(this.advancedConnectionOptionsPage);
             this.connOptions.Location = new System.Drawing.Point(13, 168);
             this.connOptions.Name = "connOptions";
             this.connOptions.SelectedIndex = 0;
-            this.connOptions.Size = new System.Drawing.Size(570, 585);
+            this.connOptions.Size = new System.Drawing.Size(570, 441);
             this.connOptions.TabIndex = 7;
             // 
             // connOptionsBasic
@@ -307,24 +321,21 @@
             this.connOptionsBasic.Location = new System.Drawing.Point(4, 22);
             this.connOptionsBasic.Name = "connOptionsBasic";
             this.connOptionsBasic.Padding = new System.Windows.Forms.Padding(3);
-            this.connOptionsBasic.Size = new System.Drawing.Size(562, 559);
+            this.connOptionsBasic.Size = new System.Drawing.Size(562, 415);
             this.connOptionsBasic.TabIndex = 0;
             this.connOptionsBasic.Text = "Základní nastavení";
             this.connOptionsBasic.UseVisualStyleBackColor = true;
             // 
             // connOptionsBox
             // 
-            this.connOptionsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.connOptionsBox.Controls.Add(this.osAuthenticate);
             this.connOptionsBox.Controls.Add(this.DBAPrivilegesLabel);
             this.connOptionsBox.Controls.Add(this.DBAPrivileges);
             this.connOptionsBox.Controls.Add(this.namingMethodType);
             this.connOptionsBox.Controls.Add(this.namingMethodTypeLabel);
-            this.connOptionsBox.Location = new System.Drawing.Point(6, 6);
+            this.connOptionsBox.Location = new System.Drawing.Point(6, 7);
             this.connOptionsBox.Name = "connOptionsBox";
-            this.connOptionsBox.Size = new System.Drawing.Size(289, 128);
+            this.connOptionsBox.Size = new System.Drawing.Size(281, 131);
             this.connOptionsBox.TabIndex = 6;
             this.connOptionsBox.TabStop = false;
             this.connOptionsBox.Text = "Nastavení";
@@ -332,18 +343,20 @@
             // connectionDescriptionBox
             // 
             this.connectionDescriptionBox.Controls.Add(this.directNamingBox);
-            this.connectionDescriptionBox.Controls.Add(this.tnsNamingBox);
             this.connectionDescriptionBox.Controls.Add(this.ldapNamingBox);
-            this.connectionDescriptionBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.connectionDescriptionBox.Location = new System.Drawing.Point(3, 140);
+            this.connectionDescriptionBox.Location = new System.Drawing.Point(6, 144);
             this.connectionDescriptionBox.Name = "connectionDescriptionBox";
-            this.connectionDescriptionBox.Size = new System.Drawing.Size(556, 416);
+            this.connectionDescriptionBox.Size = new System.Drawing.Size(543, 221);
             this.connectionDescriptionBox.TabIndex = 6;
             this.connectionDescriptionBox.TabStop = false;
             this.connectionDescriptionBox.Text = "Pojmenování zdroje";
             // 
             // directNamingBox
             // 
+            this.directNamingBox.Controls.Add(this.sidErrorLabel);
+            this.directNamingBox.Controls.Add(this.tnsNamingBox);
+            this.directNamingBox.Controls.Add(this.serviceNameErrorLabel);
+            this.directNamingBox.Controls.Add(this.hostErrorLabel);
             this.directNamingBox.Controls.Add(this.host);
             this.directNamingBox.Controls.Add(this.serverType);
             this.directNamingBox.Controls.Add(this.port);
@@ -356,10 +369,9 @@
             this.directNamingBox.Controls.Add(this.portLabel);
             this.directNamingBox.Controls.Add(this.instanceNameLabel);
             this.directNamingBox.Controls.Add(this.hostLabel);
-            this.directNamingBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.directNamingBox.Location = new System.Drawing.Point(3, 16);
             this.directNamingBox.Name = "directNamingBox";
-            this.directNamingBox.Size = new System.Drawing.Size(550, 397);
+            this.directNamingBox.Size = new System.Drawing.Size(537, 202);
             this.directNamingBox.TabIndex = 2;
             this.directNamingBox.TabStop = false;
             this.directNamingBox.Text = "Přímé zadání údajů";
@@ -369,15 +381,15 @@
             this.host.FormattingEnabled = true;
             this.host.Location = new System.Drawing.Point(103, 25);
             this.host.Name = "host";
-            this.host.Size = new System.Drawing.Size(172, 21);
+            this.host.Size = new System.Drawing.Size(181, 21);
             this.host.TabIndex = 7;
             // 
             // serverType
             // 
             this.serverType.FormattingEnabled = true;
-            this.serverType.Location = new System.Drawing.Point(103, 200);
+            this.serverType.Location = new System.Drawing.Point(103, 150);
             this.serverType.Name = "serverType";
-            this.serverType.Size = new System.Drawing.Size(135, 21);
+            this.serverType.Size = new System.Drawing.Size(94, 21);
             this.serverType.TabIndex = 6;
             // 
             // port
@@ -389,29 +401,29 @@
             // 
             // sid
             // 
-            this.sid.Location = new System.Drawing.Point(103, 156);
+            this.sid.Location = new System.Drawing.Point(103, 124);
             this.sid.Name = "sid";
-            this.sid.Size = new System.Drawing.Size(172, 20);
+            this.sid.Size = new System.Drawing.Size(181, 20);
             this.sid.TabIndex = 4;
             // 
             // instanceName
             // 
-            this.instanceName.Location = new System.Drawing.Point(103, 111);
+            this.instanceName.Location = new System.Drawing.Point(103, 94);
             this.instanceName.Name = "instanceName";
-            this.instanceName.Size = new System.Drawing.Size(172, 20);
+            this.instanceName.Size = new System.Drawing.Size(181, 20);
             this.instanceName.TabIndex = 3;
             // 
             // serviceName
             // 
-            this.serviceName.Location = new System.Drawing.Point(103, 85);
+            this.serviceName.Location = new System.Drawing.Point(103, 74);
             this.serviceName.Name = "serviceName";
-            this.serviceName.Size = new System.Drawing.Size(172, 20);
+            this.serviceName.Size = new System.Drawing.Size(181, 20);
             this.serviceName.TabIndex = 2;
             // 
             // sidB
             // 
             this.sidB.AutoSize = true;
-            this.sidB.Location = new System.Drawing.Point(9, 157);
+            this.sidB.Location = new System.Drawing.Point(9, 125);
             this.sidB.Name = "sidB";
             this.sidB.Size = new System.Drawing.Size(43, 17);
             this.sidB.TabIndex = 1;
@@ -422,7 +434,7 @@
             // serviceNameB
             // 
             this.serviceNameB.AutoSize = true;
-            this.serviceNameB.Location = new System.Drawing.Point(9, 86);
+            this.serviceNameB.Location = new System.Drawing.Point(9, 75);
             this.serviceNameB.Name = "serviceNameB";
             this.serviceNameB.Size = new System.Drawing.Size(88, 17);
             this.serviceNameB.TabIndex = 1;
@@ -433,7 +445,7 @@
             // serverTypeLabel
             // 
             this.serverTypeLabel.AutoSize = true;
-            this.serverTypeLabel.Location = new System.Drawing.Point(6, 203);
+            this.serverTypeLabel.Location = new System.Drawing.Point(6, 153);
             this.serverTypeLabel.Name = "serverTypeLabel";
             this.serverTypeLabel.Size = new System.Drawing.Size(66, 13);
             this.serverTypeLabel.TabIndex = 0;
@@ -451,7 +463,7 @@
             // instanceNameLabel
             // 
             this.instanceNameLabel.AutoSize = true;
-            this.instanceNameLabel.Location = new System.Drawing.Point(30, 114);
+            this.instanceNameLabel.Location = new System.Drawing.Point(30, 97);
             this.instanceNameLabel.Name = "instanceNameLabel";
             this.instanceNameLabel.Size = new System.Drawing.Size(51, 13);
             this.instanceNameLabel.TabIndex = 0;
@@ -468,6 +480,7 @@
             // 
             // tnsNamingBox
             // 
+            this.tnsNamingBox.Controls.Add(this.tnsNameErrorLabel);
             this.tnsNamingBox.Controls.Add(this.tnsPort);
             this.tnsNamingBox.Controls.Add(this.tnsServerType);
             this.tnsNamingBox.Controls.Add(this.tnsName);
@@ -482,34 +495,41 @@
             this.tnsNamingBox.Controls.Add(this.tnsInstanceNameLabel);
             this.tnsNamingBox.Controls.Add(this.tnsServerLabel);
             this.tnsNamingBox.Controls.Add(this.tnsNameLabel);
-            this.tnsNamingBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tnsNamingBox.Location = new System.Drawing.Point(3, 16);
+            this.tnsNamingBox.Location = new System.Drawing.Point(33, 192);
             this.tnsNamingBox.Name = "tnsNamingBox";
-            this.tnsNamingBox.Size = new System.Drawing.Size(550, 397);
+            this.tnsNamingBox.Size = new System.Drawing.Size(388, 202);
             this.tnsNamingBox.TabIndex = 1;
             this.tnsNamingBox.TabStop = false;
             this.tnsNamingBox.Text = "TNS naming";
             // 
             // tnsPort
             // 
-            this.tnsPort.Location = new System.Drawing.Point(112, 79);
+            this.tnsPort.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tnsPort.Location = new System.Drawing.Point(112, 74);
             this.tnsPort.Name = "tnsPort";
-            this.tnsPort.Size = new System.Drawing.Size(100, 20);
+            this.tnsPort.Size = new System.Drawing.Size(64, 20);
             this.tnsPort.TabIndex = 33;
             // 
             // tnsServerType
             // 
-            this.tnsServerType.Location = new System.Drawing.Point(112, 216);
+            this.tnsServerType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tnsServerType.Location = new System.Drawing.Point(112, 185);
             this.tnsServerType.Name = "tnsServerType";
-            this.tnsServerType.Size = new System.Drawing.Size(221, 20);
+            this.tnsServerType.Size = new System.Drawing.Size(135, 20);
             this.tnsServerType.TabIndex = 32;
             // 
             // tnsName
             // 
+            this.tnsName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tnsName.FormattingEnabled = true;
             this.tnsName.Location = new System.Drawing.Point(112, 22);
             this.tnsName.Name = "tnsName";
-            this.tnsName.Size = new System.Drawing.Size(221, 21);
+            this.tnsName.Size = new System.Drawing.Size(135, 21);
             this.tnsName.TabIndex = 31;
             // 
             // tnsSid
@@ -517,10 +537,10 @@
             this.tnsSid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tnsSid.Location = new System.Drawing.Point(112, 187);
+            this.tnsSid.Location = new System.Drawing.Point(112, 157);
             this.tnsSid.Name = "tnsSid";
             this.tnsSid.ReadOnly = true;
-            this.tnsSid.Size = new System.Drawing.Size(221, 20);
+            this.tnsSid.Size = new System.Drawing.Size(135, 20);
             this.tnsSid.TabIndex = 28;
             // 
             // tnsInstanceName
@@ -528,10 +548,10 @@
             this.tnsInstanceName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tnsInstanceName.Location = new System.Drawing.Point(112, 142);
+            this.tnsInstanceName.Location = new System.Drawing.Point(110, 128);
             this.tnsInstanceName.Name = "tnsInstanceName";
             this.tnsInstanceName.ReadOnly = true;
-            this.tnsInstanceName.Size = new System.Drawing.Size(221, 20);
+            this.tnsInstanceName.Size = new System.Drawing.Size(137, 20);
             this.tnsInstanceName.TabIndex = 27;
             // 
             // tnsServer
@@ -539,10 +559,10 @@
             this.tnsServer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tnsServer.Location = new System.Drawing.Point(112, 53);
+            this.tnsServer.Location = new System.Drawing.Point(112, 49);
             this.tnsServer.Name = "tnsServer";
             this.tnsServer.ReadOnly = true;
-            this.tnsServer.Size = new System.Drawing.Size(221, 20);
+            this.tnsServer.Size = new System.Drawing.Size(135, 20);
             this.tnsServer.TabIndex = 25;
             // 
             // tnsServiceName
@@ -550,10 +570,10 @@
             this.tnsServiceName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tnsServiceName.Location = new System.Drawing.Point(112, 116);
+            this.tnsServiceName.Location = new System.Drawing.Point(112, 101);
             this.tnsServiceName.Name = "tnsServiceName";
             this.tnsServiceName.ReadOnly = true;
-            this.tnsServiceName.Size = new System.Drawing.Size(221, 20);
+            this.tnsServiceName.Size = new System.Drawing.Size(135, 20);
             this.tnsServiceName.TabIndex = 26;
             // 
             // tnsSidB
@@ -563,7 +583,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tnsSidB.AutoSize = true;
             this.tnsSidB.Enabled = false;
-            this.tnsSidB.Location = new System.Drawing.Point(18, 188);
+            this.tnsSidB.Location = new System.Drawing.Point(18, 158);
             this.tnsSidB.Name = "tnsSidB";
             this.tnsSidB.Size = new System.Drawing.Size(43, 17);
             this.tnsSidB.TabIndex = 23;
@@ -573,9 +593,12 @@
             // 
             // tnsServiceNameB
             // 
+            this.tnsServiceNameB.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tnsServiceNameB.AutoSize = true;
             this.tnsServiceNameB.Enabled = false;
-            this.tnsServiceNameB.Location = new System.Drawing.Point(18, 117);
+            this.tnsServiceNameB.Location = new System.Drawing.Point(18, 102);
             this.tnsServiceNameB.Name = "tnsServiceNameB";
             this.tnsServiceNameB.Size = new System.Drawing.Size(88, 17);
             this.tnsServiceNameB.TabIndex = 24;
@@ -589,7 +612,7 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tnsServerTypeLabel.AutoSize = true;
-            this.tnsServerTypeLabel.Location = new System.Drawing.Point(15, 219);
+            this.tnsServerTypeLabel.Location = new System.Drawing.Point(15, 188);
             this.tnsServerTypeLabel.Name = "tnsServerTypeLabel";
             this.tnsServerTypeLabel.Size = new System.Drawing.Size(66, 13);
             this.tnsServerTypeLabel.TabIndex = 20;
@@ -601,7 +624,7 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tnsPortLabel.AutoSize = true;
-            this.tnsPortLabel.Location = new System.Drawing.Point(15, 82);
+            this.tnsPortLabel.Location = new System.Drawing.Point(15, 77);
             this.tnsPortLabel.Name = "tnsPortLabel";
             this.tnsPortLabel.Size = new System.Drawing.Size(29, 13);
             this.tnsPortLabel.TabIndex = 19;
@@ -613,7 +636,7 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tnsInstanceNameLabel.AutoSize = true;
-            this.tnsInstanceNameLabel.Location = new System.Drawing.Point(39, 145);
+            this.tnsInstanceNameLabel.Location = new System.Drawing.Point(37, 131);
             this.tnsInstanceNameLabel.Name = "tnsInstanceNameLabel";
             this.tnsInstanceNameLabel.Size = new System.Drawing.Size(51, 13);
             this.tnsInstanceNameLabel.TabIndex = 22;
@@ -625,7 +648,7 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tnsServerLabel.AutoSize = true;
-            this.tnsServerLabel.Location = new System.Drawing.Point(15, 56);
+            this.tnsServerLabel.Location = new System.Drawing.Point(15, 52);
             this.tnsServerLabel.Name = "tnsServerLabel";
             this.tnsServerLabel.Size = new System.Drawing.Size(41, 13);
             this.tnsServerLabel.TabIndex = 21;
@@ -645,47 +668,49 @@
             // 
             // ldapNamingBox
             // 
+            this.ldapNamingBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ldapNamingBox.BackColor = System.Drawing.SystemColors.Control;
+            this.ldapNamingBox.Controls.Add(this.ldapContextErrorLabel);
+            this.ldapNamingBox.Controls.Add(this.ldapServerErrorLabel);
+            this.ldapNamingBox.Controls.Add(this.ldapServiceNameErrorLabel);
             this.ldapNamingBox.Controls.Add(this.ldapServiceName);
             this.ldapNamingBox.Controls.Add(this.ldapContext);
             this.ldapNamingBox.Controls.Add(this.ldapServiceNameLabel);
             this.ldapNamingBox.Controls.Add(this.ldapContextLabel);
             this.ldapNamingBox.Controls.Add(this.ldapServerLabel);
             this.ldapNamingBox.Controls.Add(this.ldapServer);
-            this.ldapNamingBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ldapNamingBox.Location = new System.Drawing.Point(3, 16);
             this.ldapNamingBox.Name = "ldapNamingBox";
-            this.ldapNamingBox.Size = new System.Drawing.Size(550, 397);
+            this.ldapNamingBox.Size = new System.Drawing.Size(537, 202);
             this.ldapNamingBox.TabIndex = 3;
             this.ldapNamingBox.TabStop = false;
             this.ldapNamingBox.Text = "LDAP";
             // 
             // ldapServiceName
             // 
-            this.ldapServiceName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.ldapServiceName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.ldapServiceName.Location = new System.Drawing.Point(91, 88);
+            this.ldapServiceName.Location = new System.Drawing.Point(90, 20);
             this.ldapServiceName.Name = "ldapServiceName";
-            this.ldapServiceName.Size = new System.Drawing.Size(256, 20);
+            this.ldapServiceName.Size = new System.Drawing.Size(188, 20);
             this.ldapServiceName.TabIndex = 5;
             // 
             // ldapContext
             // 
-            this.ldapContext.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.ldapContext.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.ldapContext.Location = new System.Drawing.Point(91, 52);
+            this.ldapContext.Location = new System.Drawing.Point(90, 72);
             this.ldapContext.Name = "ldapContext";
-            this.ldapContext.Size = new System.Drawing.Size(256, 20);
+            this.ldapContext.Size = new System.Drawing.Size(188, 20);
             this.ldapContext.TabIndex = 5;
             // 
             // ldapServiceNameLabel
             // 
-            this.ldapServiceNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.ldapServiceNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.ldapServiceNameLabel.AutoSize = true;
-            this.ldapServiceNameLabel.Location = new System.Drawing.Point(7, 91);
+            this.ldapServiceNameLabel.Location = new System.Drawing.Point(6, 23);
             this.ldapServiceNameLabel.Name = "ldapServiceNameLabel";
             this.ldapServiceNameLabel.Size = new System.Drawing.Size(70, 13);
             this.ldapServiceNameLabel.TabIndex = 0;
@@ -693,11 +718,10 @@
             // 
             // ldapContextLabel
             // 
-            this.ldapContextLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.ldapContextLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.ldapContextLabel.AutoSize = true;
-            this.ldapContextLabel.Location = new System.Drawing.Point(7, 55);
+            this.ldapContextLabel.Location = new System.Drawing.Point(6, 75);
             this.ldapContextLabel.Name = "ldapContextLabel";
             this.ldapContextLabel.Size = new System.Drawing.Size(73, 13);
             this.ldapContextLabel.TabIndex = 0;
@@ -705,11 +729,10 @@
             // 
             // ldapServerLabel
             // 
-            this.ldapServerLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.ldapServerLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.ldapServerLabel.AutoSize = true;
-            this.ldapServerLabel.Location = new System.Drawing.Point(7, 28);
+            this.ldapServerLabel.Location = new System.Drawing.Point(6, 48);
             this.ldapServerLabel.Name = "ldapServerLabel";
             this.ldapServerLabel.Size = new System.Drawing.Size(72, 13);
             this.ldapServerLabel.TabIndex = 0;
@@ -717,25 +740,25 @@
             // 
             // ldapServer
             // 
-            this.ldapServer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.ldapServer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.ldapServer.FormattingEnabled = true;
-            this.ldapServer.Location = new System.Drawing.Point(91, 25);
+            this.ldapServer.Location = new System.Drawing.Point(90, 45);
             this.ldapServer.Name = "ldapServer";
-            this.ldapServer.Size = new System.Drawing.Size(434, 21);
+            this.ldapServer.Size = new System.Drawing.Size(188, 21);
             this.ldapServer.TabIndex = 4;
             // 
-            // tabPage2
+            // advancedConnectionOptionsPage
             // 
-            this.tabPage2.Controls.Add(this.advancedConnOptions);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(562, 559);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Pokročilá nastavení";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.advancedConnectionOptionsPage.Controls.Add(this.advancedConnectionStringOptionsErrorLabel);
+            this.advancedConnectionOptionsPage.Controls.Add(this.advancedConnOptions);
+            this.advancedConnectionOptionsPage.Location = new System.Drawing.Point(4, 22);
+            this.advancedConnectionOptionsPage.Name = "advancedConnectionOptionsPage";
+            this.advancedConnectionOptionsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.advancedConnectionOptionsPage.Size = new System.Drawing.Size(562, 415);
+            this.advancedConnectionOptionsPage.TabIndex = 1;
+            this.advancedConnectionOptionsPage.Text = "Pokročilá nastavení";
+            this.advancedConnectionOptionsPage.UseVisualStyleBackColor = true;
             // 
             // advancedConnOptions
             // 
@@ -883,11 +906,135 @@
             this.všechnaSpojeníToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
             this.všechnaSpojeníToolStripMenuItem1.Text = "Všechna spojení";
             // 
+            // conNameErrorlabel
+            // 
+            this.conNameErrorlabel.AutoSize = true;
+            this.conNameErrorlabel.Location = new System.Drawing.Point(405, 26);
+            this.conNameErrorlabel.Name = "conNameErrorlabel";
+            this.conNameErrorlabel.Size = new System.Drawing.Size(0, 13);
+            this.conNameErrorlabel.TabIndex = 3;
+            // 
+            // connUsernameErrorLabel
+            // 
+            this.connUsernameErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.connUsernameErrorLabel.AutoSize = true;
+            this.connUsernameErrorLabel.Location = new System.Drawing.Point(405, 55);
+            this.connUsernameErrorLabel.Name = "connUsernameErrorLabel";
+            this.connUsernameErrorLabel.Size = new System.Drawing.Size(0, 13);
+            this.connUsernameErrorLabel.TabIndex = 3;
+            // 
+            // connPasswwordErrorLabel
+            // 
+            this.connPasswwordErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.connPasswwordErrorLabel.AutoSize = true;
+            this.connPasswwordErrorLabel.Location = new System.Drawing.Point(405, 87);
+            this.connPasswwordErrorLabel.Name = "connPasswwordErrorLabel";
+            this.connPasswwordErrorLabel.Size = new System.Drawing.Size(0, 13);
+            this.connPasswwordErrorLabel.TabIndex = 3;
+            // 
+            // hostErrorLabel
+            // 
+            this.hostErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.hostErrorLabel.AutoSize = true;
+            this.hostErrorLabel.Location = new System.Drawing.Point(306, 28);
+            this.hostErrorLabel.Name = "hostErrorLabel";
+            this.hostErrorLabel.Size = new System.Drawing.Size(0, 13);
+            this.hostErrorLabel.TabIndex = 8;
+            // 
+            // serviceNameErrorLabel
+            // 
+            this.serviceNameErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.serviceNameErrorLabel.AutoSize = true;
+            this.serviceNameErrorLabel.Location = new System.Drawing.Point(306, 77);
+            this.serviceNameErrorLabel.Name = "serviceNameErrorLabel";
+            this.serviceNameErrorLabel.Size = new System.Drawing.Size(0, 13);
+            this.serviceNameErrorLabel.TabIndex = 8;
+            // 
+            // sidErrorLabel
+            // 
+            this.sidErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.sidErrorLabel.AutoSize = true;
+            this.sidErrorLabel.Location = new System.Drawing.Point(306, 127);
+            this.sidErrorLabel.Name = "sidErrorLabel";
+            this.sidErrorLabel.Size = new System.Drawing.Size(0, 13);
+            this.sidErrorLabel.TabIndex = 8;
+            // 
+            // tnsNameErrorLabel
+            // 
+            this.tnsNameErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tnsNameErrorLabel.AutoSize = true;
+            this.tnsNameErrorLabel.Location = new System.Drawing.Point(254, 29);
+            this.tnsNameErrorLabel.Name = "tnsNameErrorLabel";
+            this.tnsNameErrorLabel.Size = new System.Drawing.Size(0, 13);
+            this.tnsNameErrorLabel.TabIndex = 34;
+            // 
+            // ldapServiceNameErrorLabel
+            // 
+            this.ldapServiceNameErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ldapServiceNameErrorLabel.AutoSize = true;
+            this.ldapServiceNameErrorLabel.Location = new System.Drawing.Point(294, 23);
+            this.ldapServiceNameErrorLabel.Name = "ldapServiceNameErrorLabel";
+            this.ldapServiceNameErrorLabel.Size = new System.Drawing.Size(0, 13);
+            this.ldapServiceNameErrorLabel.TabIndex = 6;
+            // 
+            // ldapServerErrorLabel
+            // 
+            this.ldapServerErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ldapServerErrorLabel.AutoSize = true;
+            this.ldapServerErrorLabel.Location = new System.Drawing.Point(294, 48);
+            this.ldapServerErrorLabel.Name = "ldapServerErrorLabel";
+            this.ldapServerErrorLabel.Size = new System.Drawing.Size(0, 13);
+            this.ldapServerErrorLabel.TabIndex = 6;
+            // 
+            // ldapContextErrorLabel
+            // 
+            this.ldapContextErrorLabel.AutoSize = true;
+            this.ldapContextErrorLabel.Location = new System.Drawing.Point(294, 75);
+            this.ldapContextErrorLabel.Name = "ldapContextErrorLabel";
+            this.ldapContextErrorLabel.Size = new System.Drawing.Size(0, 13);
+            this.ldapContextErrorLabel.TabIndex = 6;
+            // 
+            // connNameErrorLabel
+            // 
+            this.connNameErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.connNameErrorLabel.AutoSize = true;
+            this.connNameErrorLabel.Location = new System.Drawing.Point(405, 26);
+            this.connNameErrorLabel.Name = "connNameErrorLabel";
+            this.connNameErrorLabel.Size = new System.Drawing.Size(0, 13);
+            this.connNameErrorLabel.TabIndex = 4;
+            // 
+            // advancedConnectionStringOptionsErrorLabel
+            // 
+            this.advancedConnectionStringOptionsErrorLabel.AutoSize = true;
+            this.advancedConnectionStringOptionsErrorLabel.Location = new System.Drawing.Point(8, 370);
+            this.advancedConnectionStringOptionsErrorLabel.Name = "advancedConnectionStringOptionsErrorLabel";
+            this.advancedConnectionStringOptionsErrorLabel.Size = new System.Drawing.Size(0, 13);
+            this.advancedConnectionStringOptionsErrorLabel.TabIndex = 2;
+            // 
+            // errorLabel
+            // 
+            this.errorLabel.AutoSize = true;
+            this.errorLabel.ForeColor = System.Drawing.Color.Red;
+            this.errorLabel.Location = new System.Drawing.Point(18, 623);
+            this.errorLabel.Name = "errorLabel";
+            this.errorLabel.Size = new System.Drawing.Size(0, 13);
+            this.errorLabel.TabIndex = 9;
+            // 
             // ConnectionManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(598, 785);
+            this.ClientSize = new System.Drawing.Size(598, 695);
+            this.Controls.Add(this.errorLabel);
             this.Controls.Add(this.connmgrNabidka);
             this.Controls.Add(this.connOptions);
             this.Controls.Add(this.okB);
@@ -910,7 +1057,8 @@
             this.tnsNamingBox.PerformLayout();
             this.ldapNamingBox.ResumeLayout(false);
             this.ldapNamingBox.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
+            this.advancedConnectionOptionsPage.ResumeLayout(false);
+            this.advancedConnectionOptionsPage.PerformLayout();
             this.connmgrNabidka.ResumeLayout(false);
             this.connmgrNabidka.PerformLayout();
             this.ResumeLayout(false);
@@ -937,7 +1085,7 @@
         private System.Windows.Forms.MaskedTextBox connPassword;
         private System.Windows.Forms.TabControl connOptions;
         private System.Windows.Forms.TabPage connOptionsBasic;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage advancedConnectionOptionsPage;
         private System.Windows.Forms.ToolStrip connmgrNabidka;
         private System.Windows.Forms.ToolStripButton newConnB;
         private System.Windows.Forms.ToolStripButton saveConnB;
@@ -992,5 +1140,18 @@
         private System.Windows.Forms.ComboBox tnsName;
         private System.Windows.Forms.TextBox tnsPort;
         private System.Windows.Forms.TextBox tnsServerType;
+        private System.Windows.Forms.Label conNameErrorlabel;
+        private System.Windows.Forms.Label connPasswwordErrorLabel;
+        private System.Windows.Forms.Label connUsernameErrorLabel;
+        private System.Windows.Forms.Label sidErrorLabel;
+        private System.Windows.Forms.Label serviceNameErrorLabel;
+        private System.Windows.Forms.Label hostErrorLabel;
+        private System.Windows.Forms.Label tnsNameErrorLabel;
+        private System.Windows.Forms.Label ldapContextErrorLabel;
+        private System.Windows.Forms.Label ldapServerErrorLabel;
+        private System.Windows.Forms.Label ldapServiceNameErrorLabel;
+        private System.Windows.Forms.Label connNameErrorLabel;
+        private System.Windows.Forms.Label advancedConnectionStringOptionsErrorLabel;
+        private System.Windows.Forms.Label errorLabel;
     }
 }
