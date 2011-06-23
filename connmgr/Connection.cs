@@ -27,12 +27,24 @@ namespace connmgr
             data = null;
         }
 
+        public int Id
+        {
+            get
+            {
+                if (data == null)
+                    throw new ObjectDisposedException(name);
+
+                return id;
+            }
+        }
+
         public string Name
         {
             get
             {
                 if (data == null)
                     throw new ObjectDisposedException(name);
+
                 return data.Name;
             }
         }
@@ -47,14 +59,14 @@ namespace connmgr
             }
         }
 
-        public EAuthType AuthType
+        public bool OsAuthentication
         {
             get
             {
                 if (data == null)
                     throw new ObjectDisposedException(name);
-                
-                return data.AuthType;
+
+                return data.OsAuthentication;
             }
         }
 

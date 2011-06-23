@@ -33,11 +33,12 @@ namespace connmgr
 
         GroupBox namingBox;
         // datovy kontejner pro ulozeni dat o spojeni
-        ConnectionData connectData;
+        ConnectionData connectData = new ConnectionData();
         // priznak zadavani noveho pripojeni
         bool newConnection;
         // odkaz na ConnectionManager
         ConnectionManager connectionManager;
+        BindingSource connSource = new BindingSource();
 
         public ConnectionManagerForm(ConnectionManager connectionManager)
         {
@@ -46,15 +47,62 @@ namespace connmgr
             this.connectionManager = connectionManager;
             linkWithConnectManager();
             // vytvor datovy kontejner a resetuj nektera jeho nastaveni
-            connectData = new ConnectionData();
             connectData.resetConnectionStringValues();
             // proved uvodni nastaveni
             initAuthentication();
             initNamingMethods();
             initAdvancedConnectionStringOptions();
+            setConnectionBindingSource();
+            setConnectionBindings();
+            setToolbar();
+
             // nastav dalsi udalosti
-            setToolBarHandlers();
             setHandlers();
+        }
+
+        void setConnectionBindings()
+        {
+            // nastav bindingy pro prvky formulare
+            // zakladni a autentizacni udaje
+            connName.DataBindings.Add(new Binding("Text", connSource, "Name"));
+            connUsername.DataBindings.Add(new Binding("Text", connSource, "UserName"));
+            osAuthenticate.DataBindings.Add(new Binding("Checked", connSource, "OsAuthenticaion"));
+            DBAPrivileges.DataBindings.Add(new Binding("Value", connSource, "EDbaPrivileges"));
+            namingMethodType.DataBindings.Add(new Binding("Value", connSource, "NamingMethod"));
+            // udaje naming metod
+            // 1) direct naming
+            host.DataBindings.Add(new Binding("Text", connSource, "Server"));
+            port.DataBindings.Add(new Binding("Value", connSource, "Port"));
+            sidB.DataBindings.Add(new Binding("Checked", connSource, ""));
+            serviceName.DataBindings.Add(new Binding("Text", connSource, "ServiceName"));
+            instanceName.DataBindings.Add(new Binding("Text", connSource, "InstanceName"));
+            sid.DataBindings.Add(new Binding("Text", connSource, "Sid"));
+            serverType.DataBindings.Add(new Binding("Value", connSource, "ServerType"));
+            // 2) TNS naming
+            tnsName.DataBindings.Add(new Binding("Text", connSource, "TnsServiceName"));
+            // 3) LDAP naming
+            ldapServiceName.DataBindings.Add(new Binding("Text", connSource, "LdapServiceName"));
+            ldapServer.DataBindings.Add(new Binding("Text", connSource, "LdapServer"));
+            ldapContext.DataBindings.Add(new Binding("Text", connSource, "LdapContext"));
+            // nastav binding pro combobox v toolbaru
+            connList.ComboBox.DataSource = connSource;
+            connList.ComboBox.DisplayMember = "Name";
+            connList.ComboBox.ValueMember = "Name"; Binding b;b.Control
+        }
+
+        void setConnectionBindingSource()
+        {
+            connSource.AllowNew = true;
+            connSource.DataSource = typeof(Connection);
+        }
+
+        void setToolbar()
+        {
+            // nastav seznam pripojeni
+            connList.AutoCompleteMode = AutoCompleteMode.Suggest;
+            connList.AutoCompleteSource = AutoCompleteSource.ListItems;
+            // nastav udalosti
+            setToolBarHandlers();
         }
 
         void linkWithConnectManager()
@@ -63,10 +111,16 @@ namespace connmgr
             connectionManager.ConnectionAdded += connectionAddedEventHandler;
         }
 
+        /// <summary>
+        /// Obsluha pridani noveho pripojeni
+        /// </summary>
+        /// <param name="e"></param>
         void connectionAddedEventHandler(ConnectionAddedEventArgs e)
         {
-            // pridej nove pripojeni
-            MessageBox.Show(e.Connection.Name);
+            // pridej pripojeni do seznamu pripojeni
+            Connection connection = e.Connection;
+            connSource.Add(connection);
+            MessageBox.Show("Connection added!");
         }
 
         void formClosing(object sender, FormClosingEventArgs e)
@@ -155,12 +209,10 @@ namespace connmgr
             // zapis zakladni data
             connectData.Name = connName.Text;
             // zapis autentizacni data
-            if (!osAuthenticate.Checked)
+            if (!(connectData.OsAuthentication = osAuthenticate.Checked))
             {
-                connectData.AuthType = EAuthType.Database;
                 connectData.UserName = connUsername.Text;
-            } else
-                connectData.AuthType = EAuthType.Os;
+            }
 
             connectData.DbaPrivileges = (EDbaPrivileges)DBAPrivileges.SelectedValue;
 

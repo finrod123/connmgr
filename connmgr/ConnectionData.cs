@@ -12,7 +12,7 @@ namespace connmgr
         // basic properties
         string Name { get; }
         string UserName { get; }
-        EAuthType AuthType { get; }
+        bool OsAuthentication { get; }
         EDbaPrivileges DbaPrivileges { get; }
         ENamingMethod NamingMethod { get; }
         
@@ -120,7 +120,7 @@ namespace connmgr
         public string UserName { get; set; }
         // typ autentizace
         [Browsable(false)]
-        public EAuthType AuthType { get; set; }
+        public bool OsAuthentication { get; set; }
         // zvlastni opravneni pro pripojeni k databazi
         [Browsable(false)]
         public EDbaPrivileges DbaPrivileges { get; set; }
@@ -308,7 +308,7 @@ namespace connmgr
 
             clone.Name = Name;
             clone.UserName = UserName;
-            clone.AuthType = AuthType;
+            clone.OsAuthentication = OsAuthentication;
             clone.NamingMethod = NamingMethod;
 
             switch (NamingMethod)
